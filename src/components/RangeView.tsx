@@ -3,7 +3,17 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Import the styles
 import { FormGroup, Input, Label } from "reactstrap";
 
-const RangeView = ({
+interface RangeViewProps {
+  selectedRange: string;
+  setSelectedRange: (range: string) => void;
+  startDate?: Date; // Changed to optional
+  setStartDate: (date: Date | undefined) => void; // Change to Date | undefined
+  endDate?: Date; // Changed to optional
+  setEndDate: (date: Date | undefined) => void; // Change to Date | undefined
+  handleDateChange: (range: string) => void;
+}
+
+const RangeView: React.FC<RangeViewProps> = ({
   selectedRange,
   setSelectedRange,
   startDate,
@@ -15,16 +25,16 @@ const RangeView = ({
   // Effect to handle selectedRange changes and update dates accordingly
   useEffect(() => {
     handleDateChange(selectedRange);
-  }, [selectedRange]);
+  }, [selectedRange, handleDateChange]);
 
-  const handleRangeChange = (event) => {
+  const handleRangeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const range = event.target.value;
     setSelectedRange(range);
   };
 
   return (
-    <div className="date-range-picker">
-      <div className="preset-ranges mb-3 d-flex flex-wrap">
+    <div className="range-view">
+      <div className="preset-ranges d-flex flex-wrap">
         {[
           "today",
           "yesterday",
@@ -54,24 +64,19 @@ const RangeView = ({
         ))}
       </div>
 
-      {/* Date Picker for Custom Range */}
-      <div className="custom-range">
-        <FormGroup>
-          <DatePicker
-            inline
-            selectsRange
-            startDate={startDate}
-            endDate={endDate}
-            onChange={(update) => {
-              setStartDate(update[0]);
-              setEndDate(update[1]);
-            }}
-            dateFormat="yyyy/MM/dd"
-            className="form-control date-picker"
-            placeholderText="Select Date Range"
-          />
-        </FormGroup>
-      </div>
+      <DatePicker
+        inline
+        selectsRange
+        startDate={startDate}
+        endDate={endDate}
+        onChange={(update: [Date | null, Date | null]) => {
+          setStartDate(update[0] || undefined); // Convert null to undefined
+          setEndDate(update[1] || undefined); // Convert null to undefined
+        }}
+        dateFormat="yyyy/MM/dd"
+        className="form-control date-picker"
+        placeholderText="Select Date Range"
+      />
     </div>
   );
 };

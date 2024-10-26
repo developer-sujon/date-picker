@@ -1,18 +1,28 @@
 import React from "react";
 import { FormGroup, Input, Label } from "reactstrap";
 
-const PresetRanges = ({ selectedRange, onRangeChange }) => {
+interface PresetRangesProps {
+  selectedRange: string;
+  onRangeChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const PresetRanges: React.FC<PresetRangesProps> = ({
+  selectedRange,
+  onRangeChange,
+}) => {
+  const ranges = [
+    "today",
+    "yesterday",
+    "last7days",
+    "last30days",
+    "last90days",
+    "last365days",
+    "custom",
+  ];
+
   return (
     <div className="preset-ranges mb-3">
-      {[
-        "today",
-        "yesterday",
-        "last7days",
-        "last30days",
-        "last90days",
-        "last365days",
-        "custom",
-      ].map((range) => (
+      {ranges.map((range) => (
         <div className="preset" key={range}>
           <FormGroup check>
             <Label check>

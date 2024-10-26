@@ -1,9 +1,16 @@
 import React from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css"; // Import the styles
+import "react-datepicker/dist/react-datepicker.css";
 
-const YearView = ({ year, setYear, setStartDate, setEndDate }) => {
-  const handleYearChange = (date) => {
+interface YearViewProps {
+  year: number;
+  setYear: (year: number) => void;
+  setStartDate: (date: Date) => void;
+  setEndDate: (date: Date) => void;
+}
+
+const YearView: React.FC<YearViewProps> = ({ year, setYear, setStartDate, setEndDate }) => {
+  const handleYearChange = (date: Date) => {
     const selectedYear = date.getFullYear();
     setYear(selectedYear);
 
@@ -19,12 +26,13 @@ const YearView = ({ year, setYear, setStartDate, setEndDate }) => {
       <DatePicker
         inline
         selected={new Date(year, 0, 1)}
-        onChange={handleYearChange}
+        onChange={(date) => date && handleYearChange(date)}
         showYearPicker
         dateFormat="yyyy"
         className="form-control date-picker"
         placeholderText="Select Year"
         yearItemNumber={6}
+        popperClassName="full-width-calendar"
       />
     </div>
   );

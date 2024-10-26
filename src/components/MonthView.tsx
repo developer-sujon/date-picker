@@ -1,10 +1,17 @@
-// MonthView.js
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const MonthView = ({ startDate, setStartDate, setEndDate }) => {
-  const handleMonthChange = (date) => {
+interface MonthViewProps {
+  startDate: Date;
+  setStartDate: (date: Date) => void;
+  setEndDate: (date: Date) => void;
+}
+
+const MonthView: React.FC<MonthViewProps> = ({ startDate, setStartDate, setEndDate }) => {
+  const handleMonthChange = (date: Date | null) => {
+    if (!date) return; // Handle null case
+
     const start = new Date(date.getFullYear(), date.getMonth(), 1);
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
